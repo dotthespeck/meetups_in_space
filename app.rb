@@ -30,7 +30,21 @@ def authenticate!
 end
 
 get '/' do
+
+  @Meetups = Meetup.all.order(:name)
+
   erb :index
+end
+
+get '/meetup/:id' do
+
+  @id = Meetup.select("id")
+  @id = params[:id]
+  @meetup = Meetup.find(@id)
+
+  #@Meetups = Meetup.all.order(:name)
+
+  erb :'meetup/id'
 end
 
 get '/auth/github/callback' do
