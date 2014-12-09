@@ -36,15 +36,30 @@ get '/' do
   erb :index
 end
 
+post '/' do
+  
+  authenticate!
+
+@name = params['name'].capitalize
+@description = params['description'].capitalize
+@location = params['location'].capitalize
+Meetup.create(name: @name, description: @description,location: @location)
+
+  redirect '/'
+end
+
 get '/meetup/:id' do
 
   @id = Meetup.select("id")
   @id = params[:id]
   @meetup = Meetup.find(@id)
 
-  #@Meetups = Meetup.all.order(:name)
-
   erb :'meetup/id'
+end
+
+post '/meetup/:id' do
+
+redirect erb:'/meetup/id'
 end
 
 get '/auth/github/callback' do

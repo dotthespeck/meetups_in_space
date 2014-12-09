@@ -38,3 +38,13 @@ a:visited {
   padding: 1em;
   background-color: #3B9089;
 }
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: black; /* 1 */
+  font: inherit; /* 2 */
+  margin: 0; /* 3 */
+}

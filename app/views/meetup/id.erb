@@ -5,3 +5,10 @@
 
 <h3>Location</h3>
 <%= @meetup.location %>
+
+<h5>Join this meetup</h5>
+<div>
+  <form action="/meetups/<%= @meetup.id %>" method="post">
+    <input type="submit" value="join">
+  </form>
+</div>
