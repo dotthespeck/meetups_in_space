@@ -8,7 +8,25 @@
 
 <h5>Join this meetup</h5>
 <div>
-  <form action="/meetups/<%= @meetup.id %>" method="post">
+  <form action="/meetup/<%= @meetup.id %>" method="post">
     <input type="submit" value="join">
   </form>
+</div>
+
+<h5>Leave this meetup</h5>
+<div>
+  <form action="/leave/<%= @meetup.id %>" method="post">
+    <input type="submit" value="leave">
+  </form>
+</div>
+
+
+<div>
+<h5>Who is attending?</h5>
+<ul>
+  <% @attendees.each do |member| %>
+  <li><%= member.username %></li>
+  <img src="<%= member.avatar_url %>" alt="users_avatar" height="100" width="100">
+  <% end %>
+</ul>
 </div>

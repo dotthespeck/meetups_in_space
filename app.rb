@@ -37,15 +37,26 @@ get '/' do
 end
 
 post '/' do
-  
+
   authenticate!
 
 @name = params['name'].capitalize
-@description = params['description'].capitalize
-@location = params['location'].capitalize
-Meetup.create(name: @name, description: @description,location: @location)
+@description = params['description']
+@location = params['location']
 
-  redirect '/'
+  begin
+    m = Meetup.new(name: @name, description: @description,location: @location)
+    if m.save!
+      flash[:notice] = 'You have created a new meetup! In space!'
+      redirect '/'
+    end
+
+  rescue
+    flash[:notice] = 'That meetup already exists!'
+  end
+
+redirect '/'
+
 end
 
 get '/meetup/:id' do
@@ -54,12 +65,35 @@ get '/meetup/:id' do
   @id = params[:id]
   @meetup = Meetup.find(@id)
 
+  @attendees = @meetup.users
+
   erb :'meetup/id'
 end
 
 post '/meetup/:id' do
+  authenticate!
+  @id=params[:id]
+  @user = current_user
+  begin
+  Attendee.create(user_id: @user.id, meetup_id: @id)
+  flash[:notice] = 'You are signed up for the meetup! In space!'
+  redirect "/meetup/#{@id}"
+  rescue
+    flash[:notice] = 'You have already signed up for the meetup! In space!'
+  end
 
-redirect erb:'/meetup/id'
+redirect "/meetup/#{@id}"
+end
+
+post '/leave/:id' do
+  authenticate!
+  @id=params[:id]
+  @user = current_user
+
+    Attendee.destroy_all(:user_id => @user.id, :meetup_id => @id)
+    flash[:notice] = 'You have left the meetup! In space!'
+    redirect "/meetup/#{@id}"
+
 end
 
 get '/auth/github/callback' do

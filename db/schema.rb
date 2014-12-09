@@ -11,10 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141208172413) do
+ActiveRecord::Schema.define(version: 20141209202750) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "attendees", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "user_id"
+    t.integer  "meetup_id"
+  end
+
+  add_index "attendees", ["user_id", "meetup_id"], name: "index_attendees_on_user_id_and_meetup_id", unique: true, using: :btree
 
   create_table "meetups", force: true do |t|
     t.string   "name",        null: false
@@ -23,6 +32,8 @@ ActiveRecord::Schema.define(version: 20141208172413) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "meetups", ["name"], name: "index_meetups_on_name", unique: true, using: :btree
 
   create_table "users", force: true do |t|
     t.string   "provider",   null: false
