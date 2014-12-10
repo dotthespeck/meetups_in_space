@@ -74,6 +74,8 @@ post '/meetup/:id' do
   authenticate!
   @id=params[:id]
   @user = current_user
+  @meetup = Meetup.find(@id)
+  @attendees = @meetup.users
   begin
   Attendee.create(user_id: @user.id, meetup_id: @id)
   flash[:notice] = 'You are signed up for the meetup! In space!'
@@ -93,6 +95,14 @@ post '/leave/:id' do
     Attendee.destroy_all(:user_id => @user.id, :meetup_id => @id)
     flash[:notice] = 'You have left the meetup! In space!'
     redirect "/meetup/#{@id}"
+
+end
+
+post '/comments/:id' do
+  @comment = params[:comment]
+  @id=params[:id]
+
+  redirect "/meetup/#{@id}"
 
 end
 
