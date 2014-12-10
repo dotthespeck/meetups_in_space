@@ -67,6 +67,8 @@ get '/meetup/:id' do
 
   @attendees = @meetup.users
 
+  @comments = Comment.where(:meetup_id => @id)
+
   erb :'meetup/id'
 end
 
@@ -99,8 +101,13 @@ post '/leave/:id' do
 end
 
 post '/comments/:id' do
+
   @comment = params[:comment]
-  @id=params[:id]
+  @id = params[:id]
+  @user = current_user
+  @user_id = @user.id
+
+    Comment.create(:user_id => @user_id, :meetup_id => @id, :comment => @comment)
 
   redirect "/meetup/#{@id}"
 

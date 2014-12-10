@@ -39,3 +39,15 @@
     <input type="submit" />
   </form>
 </div>
+
+<div>
+  <h5>What are people saying about this meetup? In space?</h5>
+  <% @comments.each do |comment| %>
+  <% commenter = User.find(comment.user_id) %>
+  <ul>
+    <li><%= comment.comment %></li>
+    <img src="<%= commenter.avatar_url %>" alt="users_avatar" height="100" width="100">
+    <li><%= commenter.username %></li>
+  </ul>
+  <% end %>
+</div>
